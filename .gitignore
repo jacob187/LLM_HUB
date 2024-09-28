@@ -1,0 +1,14 @@
+# Python 
+__pycache__/
+*.py[cod]
+.python-version
+
+# Vitual Environment
+.venv/
+
+# Poetry
+poetry.lock
+
+.DS_Store
+.vscode/
+
