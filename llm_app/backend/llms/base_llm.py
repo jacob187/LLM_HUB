@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict, Tuple
+from typing import List, Tuple
 
 
 class BaseLLM(
@@ -24,16 +24,6 @@ class BaseLLM(
         self.temperature = temperature
         self.max_tokens = max_tokens
         self._api_key = _api_key
-
-    def set_api_key(self, value: str) -> None:
-        self._api_key = value
-
-    def set_model(self, model: str) -> None:
-        self.model = model
-
-    @abstractmethod
-    def get_available_models(self) -> Dict[str, int]:
-        raise NotImplementedError
 
     @abstractmethod
     def normalize_temperature(self, temperature_range: Tuple(int, int)) -> None:
