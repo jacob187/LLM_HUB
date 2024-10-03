@@ -6,6 +6,9 @@ __pycache__/
 # Vitual Environment
 .venv/
 
+.env
+
+
 # Poetry
 poetry.lock
 
