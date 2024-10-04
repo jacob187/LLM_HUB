@@ -4,6 +4,16 @@
 
 My goal for this project is to create a universal interface for interacting with LLMs by leveraging langchain. Ultimatley, I want to create a modular structure where I can build APIs to integrate LLMs into other applications.
 
+## Installation
+
+I am using poetry to manage python dependencies. To install the required packages, run the following command:
+
+```bash
+poetry install
+```
+
+Add your own API keys to a `.env` file.
+
 ## Current Structure
 
 ### Models
