@@ -9,8 +9,12 @@ readme = "README.md"
 python = "^3.11.9"
 langchain = "^0.3.1"
 streamlit = "^1.38.0"
+python-dotenv = "^1.0.1"
+langchain-anthropic = "^0.2.1"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+pythonpath = ["."]
