@@ -1,5 +1,5 @@
 from .base_llm import BaseLLM
-from . import available_models
+from ...utils import available_models
 
 import langchain_anthropic
 from langchain_core.messages import HumanMessage
@@ -12,10 +12,10 @@ load_dotenv()
 class AnthropicLLM(BaseLLM):
     def __init__(self, model: str):
         # Keeps track of the non-technical model name
-        self.user_model = model
+        self._user_model = model
 
         # Keeps track of the technical model name and max tokens
-        api_model = available_models.ANTHROPICMODELS[model]["api"]
+        self._api_model = available_models.ANTHROPICMODELS[model]["api"]
         max_tokens = available_models.ANTHROPICMODELS[model]["max_output"]
 
         # Initialize the API key
@@ -25,7 +25,7 @@ class AnthropicLLM(BaseLLM):
 
         super().__init__(
             provider="anthropic",
-            model=api_model,
+            model=self._api_model,
             api_key=api_key,
             max_tokens=max_tokens,
         )
@@ -34,10 +34,18 @@ class AnthropicLLM(BaseLLM):
     def create_llm(self) -> langchain_anthropic.ChatAnthropic:
         return langchain_anthropic.ChatAnthropic(
             api_key=self.api_key,
-            model=self.model,
+            model=self._api_model,
             max_tokens=self.max_tokens,
             temperature=self.temperature,
         )
+
+    @property
+    def user_model(self) -> str:
+        return self._user_model
+
+    @property
+    def api_model(self) -> str:
+        return self._api_model
 
     def normalize_temperature(self, temperature: float) -> float:
         return max(0.0, min(1.0, temperature))
@@ -54,8 +62,10 @@ class AnthropicLLM(BaseLLM):
     def generate_response(
         self, prompt: str, temperature: float = 0.7, max_tokens: int = 1000
     ) -> str:
-        user_temperature = self.normalize_temperature(temperature)
-        user_max_tokens = self.set_max_tokens(max_tokens)
+        user_temperature = (
+            self.normalize_temperature(float(temperature)) if temperature else 0.7
+        )
+        user_max_tokens = self.set_max_tokens(int(max_tokens)) if max_tokens else 1000
 
         self.llm.temperature = user_temperature
         self.llm.max_tokens = user_max_tokens
