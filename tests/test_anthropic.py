@@ -1,6 +1,7 @@
 import unittest
 import sys
-from llm_app.backend.llms.anthropic_llm import AnthropicLLM
+from llm_app.backend.llms.models.anthropic_llm import AnthropicLLM
+from llm_app.backend.utils import available_models
 
 
 class TestAnthropicLLM(unittest.TestCase):
@@ -25,7 +26,17 @@ class TestAnthropicLLM(unittest.TestCase):
 
 def main():
     # Initialize the AnthropicLLM with a specific model
-    model = "Claude 3.5 Sonnet"
+    print("Pick a model: ")
+
+    i = 1
+    models = list(available_models.ANTHROPICMODELS.items())
+    for key, value in models:
+        print(f"{i}. {key}")
+        i += 1
+
+    model_number = int(input("Enter the model number: "))
+    model = models[model_number - 1][0]
+    print(model)
     try:
         llm = AnthropicLLM(model)
     except ValueError as e:
@@ -35,8 +46,8 @@ def main():
     prompt = input("Enter your prompt: ")
 
     try:
-        temperature = float(input("Enter the temperature 0 - 1: "))
-        max_tokens = int(input("Enter the max tokens: "))
+        temperature = input("Enter the temperature 0 - 1: ")
+        max_tokens = input("Enter the max tokens: ")
         response = llm.generate_response(prompt, temperature, max_tokens)
 
         print(f"\nResponse from {model}:\n{response}")
