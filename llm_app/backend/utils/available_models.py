@@ -1,10 +1,22 @@
 OPENAIMODELS = {
+    "o1": {
+        "api": "o1-preview",
+        "max_output": 128000,
+    },
+    "o1-mini": {
+        "api": "o1-mini",
+        "max_output": 128000,
+    },
     "GPT-4o": {
-        "api": "gpt-4o-latest",
+        "api": "chatgpt-4o-latest",
+        "max_output": 128000,
+    },
+    "GPT-4o-Realtime": {
+        "api": "gpt-4o-realtime-preview",
         "max_output": 128000,
     },
     "GPT-4o Mini": {
-        "api": "gpt-4o-mini-2024-07-18",
+        "api": "gpt-4o-mini",
         "max_output": 128000,
     },
 }
