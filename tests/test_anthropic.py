@@ -1,12 +1,14 @@
 import unittest
 import sys
+import os
 from llm_app.backend.llms.models.anthropic_llm import AnthropicLLM
 from llm_app.backend.utils import available_models
 
 
 class TestAnthropicLLM(unittest.TestCase):
     def setUp(self):
-        self.llm = AnthropicLLM(model="Claude 3 Haiku")
+
+        self.llm = AnthropicLLM(user_model="Claude 3 Haiku")
 
     def test_normalize_temperature(self):
         self.assertEqual(self.llm.normalize_temperature(0.5), 0.5)
@@ -22,6 +24,14 @@ class TestAnthropicLLM(unittest.TestCase):
         response = self.llm.generate_response("Hello, how are you?")
         self.assertIsInstance(response, str)
         self.assertGreater(len(response), 0)
+        self.assertNotIn(os.getenv("ANTHROPIC_API_KEY"), response)
+
+    def test_getters(self):
+        self.assertEqual(self.llm.get_api_model, "claude-3-haiku-20240307")
+        self.assertEqual(self.llm.get_user_model, "Claude 3 Haiku")
+        self.assertEqual(self.llm.get_provider, "anthropic")
+        self.assertEqual(self.llm.get_temperature, 0.7)
+        self.assertEqual(self.llm.get_max_tokens, 4096)
 
 
 def main():
@@ -36,9 +46,9 @@ def main():
 
     model_number = int(input("Enter the model number: "))
     model = models[model_number - 1][0]
-    print(model)
     try:
         llm = AnthropicLLM(model)
+        # print(llm.__api_key)
     except ValueError as e:
         print(f"Error initializing LLM: {e}")
         sys.exit(1)
@@ -56,6 +66,5 @@ def main():
 
 
 if __name__ == "__main__":
-    # Running unit tests will use tokens
     # unittest.main()
     main()

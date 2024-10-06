@@ -12,20 +12,42 @@ class BaseLLM(
 
     def __init__(
         self,
-        model: str,
+        api_model: str,
         provider: str,
+        user_model: str,
         max_tokens: int,
         api_key: str,
         temperature: float = 0.7,
     ):
-        self.provider = provider
-        self._model = model
-        self.temperature = temperature
-        self.max_tokens = max_tokens
-        self.api_key = api_key
+        self.__provider = provider
+        self.__api_model = api_model
+        self.__user_model = user_model
+        self.__temperature = temperature
+        self.__max_tokens = max_tokens
+        self.__api_key = api_key
+
+    @property
+    def get_api_model(self) -> str:
+        return self.__api_model
+
+    @property
+    def get_user_model(self) -> str:
+        return self.__user_model
+
+    @property
+    def get_provider(self) -> str:
+        return self.__provider
+
+    @property
+    def get_temperature(self) -> float:
+        return self.__temperature
+
+    @property
+    def get_max_tokens(self) -> int:
+        return self.__max_tokens
 
     @abstractmethod
-    def create_llm(self) -> BaseLanguageModel:
+    def _create_llm(self) -> BaseLanguageModel:
         """Create and return a new LLM object."""
         raise NotImplementedError
 
