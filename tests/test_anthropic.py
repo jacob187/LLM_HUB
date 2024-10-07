@@ -58,9 +58,10 @@ def main():
     try:
         temperature = input("Enter the temperature 0 - 1: ")
         max_tokens = input("Enter the max tokens: ")
-        response = llm.generate_response(prompt, temperature, max_tokens)
-
-        print(f"\nResponse from {model}:\n{response}")
+        print(f"\nStreaming response from {model}:\n")
+        for chunk in llm.generate_steamed_response(prompt, temperature, max_tokens):
+            print(chunk, end="", flush=True)
+        print("\n")
     except Exception as e:
         print(f"Error generating response: {e}")
 
