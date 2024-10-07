@@ -40,9 +40,6 @@ class AnthropicLLM(BaseLLM):
             temperature=self.get_temperature,
         )
 
-    def normalize_temperature(self, temperature: float) -> float:
-        return max(0.0, min(1.0, temperature))
-
     def set_max_tokens(self, max_tokens: int) -> int:
         MAX_TOKENS = available_models.ANTHROPICMODELS[self.get_user_model]["max_output"]
         if max_tokens > MAX_TOKENS:
@@ -51,17 +48,3 @@ class AnthropicLLM(BaseLLM):
             )
         else:
             return max_tokens
-
-    def generate_response(
-        self, prompt: str, temperature: float = 0.7, max_tokens: int = 1000
-    ) -> str:
-        user_temperature = (
-            self.normalize_temperature(float(temperature)) if temperature else 0.7
-        )
-        user_max_tokens = self.set_max_tokens(int(max_tokens)) if max_tokens else 1000
-
-        self._llm.temperature = user_temperature
-        self._llm.max_tokens = user_max_tokens
-
-        response = self._llm.invoke([HumanMessage(content=prompt)])
-        return response.content
