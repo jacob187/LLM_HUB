@@ -14,6 +14,18 @@ poetry install
 
 Add your own API keys to a `.env` file.
 
+To activate the virtual environment, run the following command:
+
+```bash
+poetry shell
+```
+
+If you want to run the streamlit app, run the following command:
+
+```bash
+streamlit run llm_app/frontend/app.py
+```
+
 ## Current Structure
 
 ### Models
