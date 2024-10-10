@@ -128,8 +128,6 @@ class BaseLLM(
         self._llm.temperature = user_temperature
         self._llm.max_tokens = user_max_tokens
 
-        print(f"{self._llm.temperature} {self._llm.max_tokens}")
-
         for chunk in self._llm.stream([HumanMessage(content=prompt)]):
             if chunk.content is not None:
                 yield chunk.content
