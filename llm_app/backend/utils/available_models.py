@@ -1,3 +1,15 @@
+"""
+This module contains the available models for the LLM app.
+
+Attributes
+----------
+
+OPENAIMODELS: dict
+    A dictionary containing the available OpenAI models.
+ANTHROPICMODELS: dict
+    A dictionary containing the available Anthropic models.
+"""
+
 OPENAIMODELS = {
     "o1": {
         "api": "o1-preview",

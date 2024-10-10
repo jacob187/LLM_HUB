@@ -11,6 +11,15 @@ load_dotenv()
 
 class AnthropicLLM(BaseLLM):
     def __init__(self, user_model: str):
+        """
+        Initializes the OpenAI LLM model.
+
+        Args:
+            user_model: The English name for the model.
+
+        Raises:
+            ValueError: If the OpenAI API key is not found.
+        """
 
         # Keeps track of the technical model name and max tokens
         self.__api_model = available_models.ANTHROPICMODELS[user_model]["api"]

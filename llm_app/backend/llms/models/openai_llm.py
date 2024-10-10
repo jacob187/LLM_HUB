@@ -10,12 +10,21 @@ load_dotenv()
 
 class OpenAILLM(BaseLLM):
     def __init__(self, user_model: str):
+        """
+        Initializes the OpenAI LLM model.
+
+        Args:
+            user_model: The English name for the model.
+
+        Raises:
+            ValueError: If the OpenAI API key is not found.
+        """
 
         # Keeps track of the technical model name and max tokens
         self.__api_model = available_models.OPENAIMODELS[user_model]["api"]
         self.__max_tokens = available_models.OPENAIMODELS[user_model]["max_output"]
 
-        # Initialize the API key
+        # Initialize the API key if it is present.
         self.__api_key = os.getenv("OPENAI_API_KEY")
         if not self.__api_key:
             raise ValueError(
@@ -32,6 +41,9 @@ class OpenAILLM(BaseLLM):
         self._llm = self._create_llm()
 
     def _create_llm(self) -> langchain_openai.ChatOpenAI:
+        """
+        Creates the OpenAI LLM model given the API key, model, max tokens, and temperature.
+        """
         return langchain_openai.ChatOpenAI(
             api_key=self.__api_key,
             model=self.get_api_model,
@@ -40,6 +52,9 @@ class OpenAILLM(BaseLLM):
         )
 
     def set_max_tokens(self, max_tokens: int) -> int:
+        """
+        Sets the max tokens for the model, ensuring it is within the maximum allowed.
+        """
         MAX_TOKENS = available_models.OPENAIMODELS[self.get_user_model]["max_output"]
         if max_tokens > MAX_TOKENS:
             raise ValueError(
