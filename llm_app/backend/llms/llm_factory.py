@@ -5,9 +5,21 @@ from llm_app.backend.utils.available_models import OPENAIMODELS, ANTHROPICMODELS
 
 
 class LLMFactory:
+    """
+    A factory class that creates LLM instances.
+    """
+
     @staticmethod
     def create_llm(user_model: str) -> BaseLLM:
-        all_models = LLMFactory.merge_models()
+        """
+        Creates an LLM instance based on the user's model.
+
+        Args:
+            user_model: The user's model, in English.
+
+        Returns:
+            A BaseLLM instance.
+        """
         if user_model in OPENAIMODELS:
             return OpenAILLM(user_model)
         elif user_model in ANTHROPICMODELS:
@@ -17,4 +29,4 @@ class LLMFactory:
 
     @staticmethod
     def merge_models() -> dict[str, str]:
-        return {**OPENAIMODELS, **ANTHROPICMODELS}
+        return {**ANTHROPICMODELS, **OPENAIMODELS}
