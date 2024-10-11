@@ -41,6 +41,27 @@ OPENAIMODELS = {
     },
 }
 
+
+ANTHROPICMODELS = {
+    "Claude 3.5 Sonnet": {
+        "api": "claude-3-5-sonnet-20240620",
+        "max_output": 8192,
+    },
+    "Claude 3 Opus": {
+        "api": "claude-3-opus-20240229",
+        "max_output": 4096,
+    },
+    "Claude 3 Sonnet": {
+        "api": "claude-3-sonnet-20240229",
+        "max_output": 4096,
+    },
+    "Claude 3 Haiku": {
+        "api": "claude-3-haiku-20240307",
+        "max_output": 4096,
+    },
+}
+
+
 #  { 10/10/24
 #       "id": "tts-1",
 #       "object": "model",
@@ -239,13 +260,3 @@ OPENAIMODELS = {
 #       "created": 1721172717,
 #       "owned_by": "system"
 #     }
-
-ANTHROPICMODELS = {
-    "Claude 3.5 Sonnet": {
-        "api": "claude-3-5-sonnet-20240620",
-        "max_output": 8192,
-    },
-    "Claude 3 Opus": {"api": "claude-3-opus-20240229", "max_output": 4096},
-    "Claude 3 Sonnet": {"api": "claude-3-sonnet-20240229", "max_output": 4096},
-    "Claude 3 Haiku": {"api": "claude-3-haiku-20240307", "max_output": 4096},
-}
