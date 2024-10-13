@@ -5,6 +5,12 @@ from llm_app.frontend.components.select_model import select_model
 from llm_app.frontend.components.select_settings import select_settings
 from llm_app.frontend.components.chat_box import chat_box
 
+st.set_page_config(
+    page_title="LLM Hub",
+    page_icon="🤖",
+    layout="centered",
+)
+
 
 def main():
     st.title("LLM HUB")
