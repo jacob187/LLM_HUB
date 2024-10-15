@@ -59,7 +59,7 @@ def main():
         temperature = input("Enter the temperature 0 - 1: ")
         max_tokens = input("Enter the max tokens: ")
         print(f"\nStreaming response from {model}:\n")
-        for chunk in llm.generate_steamed_response(prompt, temperature, max_tokens):
+        for chunk in llm.generate_streamed_response(prompt, temperature, max_tokens):
             print(chunk, end="", flush=True)
         print("\n")
     except Exception as e:
@@ -67,5 +67,5 @@ def main():
 
 
 if __name__ == "__main__":
-    # unittest.main()
-    main()
+    unittest.main()
+    # main()

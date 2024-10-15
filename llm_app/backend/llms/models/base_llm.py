@@ -48,7 +48,7 @@ class BaseLLM(
     @property
     def get_api_model(self) -> str:
         """
-        Retruns API code for the model.
+        Returns API code for the model.
         """
         return self.__api_model
 
@@ -76,7 +76,7 @@ class BaseLLM(
     @property
     def get_max_tokens(self) -> int:
         """
-        Retrives the max tokens for the model.
+        Retrieves the max tokens for the model.
         """
         return self.__max_tokens
 
@@ -106,7 +106,7 @@ class BaseLLM(
         """
         raise NotImplementedError
 
-    def generate_steamed_response(
+    def generate_streamed_response(
         self, prompt: str, temperature: float = 0.7, max_tokens: int = 1000
     ) -> Iterator[str]:
         """
@@ -131,6 +131,31 @@ class BaseLLM(
         for chunk in self._llm.stream([HumanMessage(content=prompt)]):
             if chunk.content is not None:
                 yield chunk.content
+
+    def generate_response(
+        self, prompt: str, temperature: float = 0.7, max_tokens: int = 1000
+    ) -> str:
+        """
+        Generates a response from a HumanMessage.
+
+        Args:
+            prompt: The prompt to generate a response for.
+            temperature: The temperature for the model.
+            max_tokens: The maximum number of tokens to generate.
+
+        Returns:
+            The response as a string.
+        """
+        user_temperature = (
+            self.normalize_temperature(float(temperature)) if temperature else 0.7
+        )
+        user_max_tokens = self.set_max_tokens(int(max_tokens)) if max_tokens else 1000
+
+        self._llm.temperature = user_temperature
+        self._llm.max_tokens = user_max_tokens
+
+        response = self._llm.invoke([HumanMessage(content=prompt)])
+        return response.content
 
     # TODO: Setup response method so I have different ways to handle the response, i.e.
     # streaming, not streaming, json, etc.

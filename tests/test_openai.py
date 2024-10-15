@@ -1,7 +1,20 @@
+import unittest
 import sys
 import os
 from llm_app.backend.llms.models.openai_llm import OpenAILLM
 from llm_app.backend.utils import available_models
+
+
+class TestO1LLM(unittest.TestCase):
+    def setUp(self):
+
+        self.llm = OpenAILLM(user_model="o1")
+
+    def test_generate_response(self):
+        response = self.llm.generate_response("Hello, how are you?")
+        self.assertIsInstance(response, str)
+        self.assertGreater(len(response), 0)
+        self.assertNotIn(os.getenv("OPENAI_API_KEY"), response)
 
 
 def main():
@@ -28,7 +41,7 @@ def main():
         max_tokens = input("Enter the max tokens: ")
 
         print(f"\nStreaming response from {model}:\n")
-        for chunk in llm.generate_steamed_response(prompt, temperature, max_tokens):
+        for chunk in llm.generate_streamed_response(prompt, temperature, max_tokens):
             print(chunk, end="", flush=True)
         print("\n")
     except Exception as e:
@@ -36,4 +49,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    unittest.main()
