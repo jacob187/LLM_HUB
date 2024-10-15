@@ -20,6 +20,11 @@ OPENAIMODELS = {
         "api": "gpt-4o-mini-2024-07-18",
         "max_output": 16000,
     },
+    "o1": {  # Not available
+        "api": "o1-preview",
+        "max_output": 0,
+        "context_window": 128000,
+    },
     "GPT-4 Turbo": {
         "api": "gpt-4-turbo-preview",
         "max_output": 4096,
