@@ -25,7 +25,9 @@ def chat_box(llm: BaseLLM, temperature: float, max_tokens: int) -> None:
         with st.chat_message("assistant"):
             message_placeholder = st.empty()
             full_response = ""
-            for chunk in llm.generate_steamed_response(prompt, temperature, max_tokens):
+            for chunk in llm.generate_streamed_response(
+                prompt, temperature, max_tokens
+            ):
                 full_response += chunk
                 message_placeholder.markdown(full_response)
             message_placeholder.markdown(full_response)
