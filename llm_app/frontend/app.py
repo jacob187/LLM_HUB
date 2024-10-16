@@ -14,36 +14,18 @@ st.set_page_config(
 
 def main():
     st.title("LLM HUB")
+    user_model = select_model()
 
-    # Initialize session state for chat status
-    if "chat_active" not in st.session_state:
-        st.session_state.chat_active = False
+    merged_models = LLMFactory.merge_models()
+    user_model_max_tokens = merged_models[user_model]["max_output"]
+    temperature, max_tokens = select_settings(user_model_max_tokens)
 
-    if not st.session_state.chat_active:
-        user_model = (
-            select_model()
-        )  # Model selection is only available when chat is inactive
-        merged_models = LLMFactory.merge_models()
-        user_model_max_tokens = merged_models[user_model]["max_output"]
-        temperature, max_tokens = select_settings(user_model_max_tokens)
+    # Creates an LLM instance based on the user's model.
+    user_llm = LLMFactory.create_llm(user_model=user_model)
 
-        # Creates an LLM instance based on the user's model.
-        user_llm = LLMFactory.create_llm(user_model=user_model)
+    chat_box(user_llm, temperature, max_tokens)
 
-        # Set chat active state
-        st.session_state.chat_active = True
-
-        chat_box(user_llm, temperature, max_tokens)
-
-        # Button to start a new chat
-        if st.button("New Chat"):
-            st.session_state.chat_active = False
-    else:
-        st.write(
-            "You are currently in a chat. Click 'New Chat' to select a different model."
-        )
-        if st.button("New Chat"):
-            st.session_state.chat_active = False
+    # TODO: Remove ability to change model and settings after chat has started.
 
 
 if __name__ == "__main__":
