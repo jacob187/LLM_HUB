@@ -23,30 +23,24 @@ def main():
         st.session_state.temperature = 0.7
     if "max_tokens" not in st.session_state:
         st.session_state.max_tokens = 1000
-    if (
-        "messages" not in st.session_state
-    ):  # Session state for chat history in chat_box.py
+    if "messages" not in st.session_state:
         st.session_state.messages = []
 
-    # Initial model selection and settings
-    if st.session_state.user_model is None:
-        st.session_state.user_model = select_model()
-        merged_models = LLMFactory.merge_models()
-        user_model_max_tokens = merged_models[st.session_state.user_model]["max_output"]
-        st.session_state.temperature, st.session_state.max_tokens = select_settings(
-            user_model_max_tokens
-        )
+    # Model selection
+    new_model = select_model()
+    if new_model != st.session_state.user_model:
+        st.session_state.user_model = new_model
         st.session_state.user_llm = LLMFactory.create_llm(
             user_model=st.session_state.user_model
         )
-    else:
-        # Removes the selectbox after the user has selected a model
-        st.subheader(f"Model: {st.session_state.user_model}")
-        merged_models = LLMFactory.merge_models()
-        user_model_max_tokens = merged_models[st.session_state.user_model]["max_output"]
-        st.session_state.temperature, st.session_state.max_tokens = select_settings(
-            user_model_max_tokens
-        )
+        st.session_state.messages = []  # Clear messages when model changes
+
+    # Settings
+    merged_models = LLMFactory.merge_models()
+    user_model_max_tokens = merged_models[st.session_state.user_model]["max_output"]
+    st.session_state.temperature, st.session_state.max_tokens = select_settings(
+        user_model_max_tokens
+    )
 
     # Display chat box with current settings
     user_input = chat_box(
@@ -57,10 +51,6 @@ def main():
 
     # Button to start a new chat
     if st.button("New Chat"):
-        st.session_state.user_model = None
-        st.session_state.user_llm = None
-        st.session_state.temperature = 0.7
-        st.session_state.max_tokens = 1000
         st.session_state.messages = []  # Clear messages
         st.rerun()  # Force a rerun to update the UI
 
