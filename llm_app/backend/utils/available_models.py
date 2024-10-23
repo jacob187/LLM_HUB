@@ -44,7 +44,7 @@ OPENAIMODELS = {
 
 ANTHROPICMODELS = {
     "Claude 3.5 Sonnet": {
-        "api": "claude-3-5-sonnet-20240620",
+        "api": "claude-3-5-sonnet-latest",
         "max_output": 8192,
     },
     "Claude 3 Opus": {
