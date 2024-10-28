@@ -4,6 +4,14 @@ from typing import Any, Optional
 from langchain.memory import ConversationBufferMemory
 
 
+@deprecated(
+    since="0.3.1",
+    removal="1.0.0",
+    message=(
+        "Please see the migration guide at: "
+        "https://python.langchain.com/docs/versions/migrating_memory/"
+    ),
+)
 class BufferMemory(BaseMemoryWrapper):
     def __init__(self, buffer_memory: ConversationBufferMemory):
         """
