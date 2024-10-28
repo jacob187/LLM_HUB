@@ -6,7 +6,8 @@ from typing import Any, Optional
 # ConversationTokenBufferMemory
 class BaseMemoryWrapper(ABC):
 
-    def __init__(self):
+    def __init__(self, provider: str):
+        self.__provider = provider
         self.memory = self._create_memory()
 
     @abstractmethod
