@@ -7,12 +7,8 @@
     },
     "GPT-4o Mini": {
       "api": "gpt-4o-mini-2024-07-18",
-      "max_output": 16000
-    },
-    "o1": {
-      "api": "o1-preview",
-      "max_output": 0,
-      "context_window": 128000
+      "max_output": 16000,
+      "context-window": 128000
     },
     "GPT-4 Turbo": {
       "api": "gpt-4-turbo-preview",
@@ -20,35 +16,37 @@
     },
     "GPT-4": {
       "api": "gpt-4",
-      "max_output": 8192
+      "max_output": 8192,
+      "context-window": 128000
     },
 
     "GPT-3.5 Turbo": {
       "api": "gpt-3.5-turbo",
-      "max_output": 4096
-    },
-    "GPT-3.5 Turbo 16k": {
-      "api": "gpt-3.5-turbo-16k",
-      "max_output": 16384
+      "max_output": 4096,
+      "context-window": 16385
     }
   },
 
   "ANTHROPICMODELS": {
     "Claude 3.5 Sonnet": {
       "api": "claude-3-5-sonnet-latest",
-      "max_output": 8192
+      "max_output": 8192,
+      "context_window": 120000
     },
     "Claude 3 Opus": {
       "api": "claude-3-opus-20240229",
-      "max_output": 4096
+      "max_output": 4096,
+      "context_window": 120000
     },
     "Claude 3 Sonnet": {
       "api": "claude-3-sonnet-20240229",
-      "max_output": 4096
+      "max_output": 4096,
+      "context_window": 120000
     },
     "Claude 3 Haiku": {
       "api": "claude-3-haiku-20240307",
-      "max_output": 4096
+      "max_output": 4096,
+      "context_window": 120000
     }
   }
 }
