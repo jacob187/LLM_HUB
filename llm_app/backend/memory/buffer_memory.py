@@ -4,6 +4,7 @@ from typing import Any, Optional
 from langchain.memory import ConversationBufferMemory
 
 
+# From langchain docs:
 @deprecated(
     since="0.3.1",
     removal="1.0.0",
