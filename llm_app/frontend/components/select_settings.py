@@ -26,7 +26,7 @@ def select_settings(user_model_max_tokens: int) -> Tuple[float, int]:
         min_value=1,
         # Changes max token choice dynamically based on the model.
         max_value=user_model_max_tokens,
-        value=1000,
+        value=3000,
         step=1,
     )
     return temperature, max_tokens
