@@ -2,8 +2,6 @@ from abc import ABC, abstractmethod
 from typing import Any, Optional
 
 
-# TODO: consider implantation; ConversationBufferMemory, Chains, Vector-store, langgraph
-# ConversationTokenBufferMemory
 class BaseMemoryWrapper(ABC):
 
     def __init__(self, provider: str):
