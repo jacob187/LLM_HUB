@@ -1,8 +1,8 @@
 import streamlit as st
-from llm_app.backend.llms.models.base_llm import BaseLLM
+from llm_app.backend.chat.chat_manager import ChatManager
 
 
-def chat_box(llm: BaseLLM, temperature: float, max_tokens: int) -> None:
+def chat_box(chat_manager: ChatManager, temperature: float, max_tokens: int) -> None:
 
     # Initialize chat history
     if "messages" not in st.session_state:
@@ -25,7 +25,7 @@ def chat_box(llm: BaseLLM, temperature: float, max_tokens: int) -> None:
         with st.chat_message("assistant"):
             message_placeholder = st.empty()
             full_response = ""
-            for chunk in llm.generate_streamed_response(
+            for chunk in chat_manager.generate_streamed_response(
                 prompt, temperature, max_tokens
             ):
                 full_response += chunk
