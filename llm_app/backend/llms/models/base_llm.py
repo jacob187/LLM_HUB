@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 from typing import Iterator
 
 from langchain.base_language import BaseLanguageModel
-from langchain_core.messages import HumanMessage
 
 
 class BaseLLM(
@@ -43,6 +42,7 @@ class BaseLLM(
         self.__user_model = user_model
         self.__temperature = temperature
         self.__max_tokens = max_tokens
+        self._llm = self._create_llm()
         self.__api_key = api_key
 
     @property
@@ -85,6 +85,12 @@ class BaseLLM(
         """Create and return a new LLM object."""
         raise NotImplementedError
 
+    def get_language_model(self) -> BaseLanguageModel:
+        """
+        Returns the language model object.
+        """
+        return self._llm
+
     def normalize_temperature(self, temperature: float) -> float:
         """
         Ensures the temperature is within the valid range of 0.0 to 1.0.
@@ -105,57 +111,6 @@ class BaseLLM(
             The maximum number of tokens to generate.
         """
         raise NotImplementedError
-
-    def generate_streamed_response(
-        self, prompt: str, temperature: float = 0.7, max_tokens: int = 1000
-    ) -> Iterator[str]:
-        """
-         Generates a streamed response from a HumanMessage.
-
-        Args:
-            prompt: The prompt to generate a response for.
-            temperature: The temperature for the model.
-            max_tokens: The maximum number of tokens to generate.
-
-        Returns:
-            An iterator of strings, each representing a chunk of the response.
-        """
-        user_temperature = (
-            self.normalize_temperature(float(temperature)) if temperature else 0.7
-        )
-        user_max_tokens = self.set_max_tokens(int(max_tokens)) if max_tokens else 1000
-
-        self._llm.temperature = user_temperature
-        self._llm.max_tokens = user_max_tokens
-
-        for chunk in self._llm.stream([HumanMessage(content=prompt)]):
-            if chunk.content is not None:
-                yield chunk.content
-
-    def generate_response(
-        self, prompt: str, temperature: float = 0.7, max_tokens: int = 1000
-    ) -> str:
-        """
-        Generates a response from a HumanMessage.
-
-        Args:
-            prompt: The prompt to generate a response for.
-            temperature: The temperature for the model.
-            max_tokens: The maximum number of tokens to generate.
-
-        Returns:
-            The response as a string.
-        """
-        user_temperature = (
-            self.normalize_temperature(float(temperature)) if temperature else 0.7
-        )
-        user_max_tokens = self.set_max_tokens(int(max_tokens)) if max_tokens else 1000
-
-        self._llm.temperature = user_temperature
-        self._llm.max_tokens = user_max_tokens
-
-        response = self._llm.invoke([HumanMessage(content=prompt)])
-        return response.content
 
     # TODO: Setup response method so I have different ways to handle the response, i.e.
     # streaming, not streaming, json, etc.
