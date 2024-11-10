@@ -34,7 +34,9 @@ def chat_box(chat_manager: ChatManager, temperature: float, max_tokens: int) -> 
         with st.expander("Assistant:", expanded=True) as expander:
             message_placeholder = st.empty()
             full_response = ""
-            for chunk in chat_manager.generate_stream(prompt, temperature, max_tokens):
+            for chunk in chat_manager.generate_streamed_response(
+                prompt, temperature, max_tokens
+            ):
                 full_response += chunk
                 message_placeholder.markdown(full_response)
             message_placeholder.markdown(full_response)
