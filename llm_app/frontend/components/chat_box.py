@@ -9,37 +9,49 @@ def chat_box(chat_manager: ChatManager, temperature: float, max_tokens: int) -> 
         st.session_state.messages = []
 
     # Display chat messages from history on app rerun
-    for idx, message in enumerate(st.session_state.messages):
-        role = message["role"].capitalize()
+    for message in st.session_state.messages:
+        role = message["role"]
         content = message["content"]
 
-        # Shorten the label to the first 50 characters for better UI
-        display_text = (content[:47] + "...") if len(content) > 50 else content
+        # Create preview text
+        preview = (content[:47] + "...") if len(content) > 50 else content
 
-        with st.expander(f"{role}: {display_text}", expanded=True):
-            st.markdown(content)
+        # Display message with avatar and expandable content
+        with st.chat_message(role, avatar="🧑‍💻" if role == "user" else "🤖"):
+            with st.expander(preview, expanded=True):
+                st.markdown(content)
 
     # Accept user input
     if prompt := st.chat_input("Your message"):
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": prompt})
-        # Display user message in chat message container
-        with st.expander(
-            "User: " + (prompt[:47] + "..." if len(prompt) > 50 else prompt),
-            expanded=True,
-        ):
-            st.markdown(prompt)
 
-        # Generate assistant response
-        with st.expander("Assistant:", expanded=True) as expander:
+        # Display user message with avatar and expandable content
+        with st.chat_message("user", avatar="🧑‍💻"):
+            preview = (prompt[:47] + "...") if len(prompt) > 50 else prompt
+            with st.expander(preview, expanded=True):
+                st.markdown(prompt)
+
+        # Generate and display assistant response with avatar
+        with st.chat_message("assistant", avatar="🤖"):
             message_placeholder = st.empty()
             full_response = ""
-            for chunk in chat_manager.generate_streamed_response(
-                prompt, temperature, max_tokens
-            ):
-                full_response += chunk
-                message_placeholder.markdown(full_response)
-            message_placeholder.markdown(full_response)
+
+            # Show "Thinking..." while generating
+            with st.expander("Generating...", expanded=True) as response_expander:
+                for chunk in chat_manager.generate_streamed_response(
+                    prompt, temperature, max_tokens
+                ):
+                    full_response += chunk
+                    message_placeholder.markdown(full_response)
+
+                # Update expander header after response is complete
+                preview = (
+                    (full_response[:47] + "...")
+                    if len(full_response) > 50
+                    else full_response
+                )
+                response_expander.header(preview)
 
         # Add assistant response to chat history
         st.session_state.messages.append(
