@@ -22,7 +22,7 @@ def main():
     if "temperature" not in st.session_state:
         st.session_state.temperature = 0.7
     if "max_tokens" not in st.session_state:
-        st.session_state.max_tokens = 300
+        st.session_state.max_tokens = 3000
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
