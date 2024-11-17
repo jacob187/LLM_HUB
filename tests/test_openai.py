@@ -2,16 +2,25 @@ import unittest
 import sys
 import os
 from llm_app.backend.llms.models.openai_llm import OpenAILLM
+from llm_app.backend.chat.chat_manager import ChatManager
 from llm_app.backend.utils import available_models
 
 
-class TestO1LLM(unittest.TestCase):
+class TestOpenAILLM(unittest.TestCase):
     def setUp(self):
 
-        self.llm = OpenAILLM(user_model="o1")
+        self.llm = OpenAILLM(user_model="GPT-4o Mini")
+        self.chat_manager = ChatManager(self.llm)
+
+    def test_normalize_temperature(self):
+        self.assertEqual(self.llm.normalize_temperature(0.5), 0.5)
+        self.assertEqual(self.llm.normalize_temperature(-1), 0.0)
+        self.assertEqual(self.llm.normalize_temperature(2), 1.0)
 
     def test_generate_response(self):
-        response = self.llm.generate_response("Hello, how are you?")
+        response = self.chat_manager.generate_response(
+            prompt="Hello, how are you?", temperature=0.7, max_tokens=100
+        )
         self.assertIsInstance(response, str)
         self.assertGreater(len(response), 0)
         self.assertNotIn(os.getenv("OPENAI_API_KEY"), response)
