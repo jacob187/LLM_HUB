@@ -39,6 +39,7 @@ def main():
     model = models[model_number - 1][0]
     try:
         llm = OpenAILLM(model)
+        chat_manager = ChatManager(llm)
     except ValueError as e:
         print(f"Error initializing LLM: {e}")
         sys.exit(1)
@@ -50,7 +51,9 @@ def main():
         max_tokens = input("Enter the max tokens: ")
 
         print(f"\nStreaming response from {model}:\n")
-        for chunk in llm.generate_streamed_response(prompt, temperature, max_tokens):
+        for chunk in chat_manager.generate_streamed_response(
+            prompt, float(temperature), int(max_tokens)
+        ):
             print(chunk, end="", flush=True)
         print("\n")
     except Exception as e:
@@ -58,5 +61,5 @@ def main():
 
 
 if __name__ == "__main__":
-    # main()
-    unittest.main()
+    main()
+    # unittest.main()
