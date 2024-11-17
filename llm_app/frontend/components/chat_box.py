@@ -8,7 +8,34 @@ def chat_box(chat_manager: ChatManager, temperature: float, max_tokens: int) -> 
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
-    # Display chat messages from history on app rerun
+    # Add custom CSS for better text wrapping and formatting
+    st.markdown(
+        """
+        <style>
+        .stChatMessage {
+            max-width: 100%;
+        }
+        .stChatMessage .stMarkdown {
+            max-width: 100% !important;
+            overflow-x: hidden !important;
+        }
+        .stMarkdown p {
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+            white-space: pre-wrap !important;
+            margin-right: 1rem !important;
+        }
+        .stMarkdown pre {
+            white-space: pre-wrap !important;
+            overflow-x: auto !important;
+            max-width: calc(100% - 2rem) !important;
+        }
+        </style>
+    """,
+        unsafe_allow_html=True,
+    )
+
+    # Rest of the chat_box code remains the same
     for message in st.session_state.messages:
         role = message["role"]
         content = message["content"]
@@ -37,23 +64,18 @@ def chat_box(chat_manager: ChatManager, temperature: float, max_tokens: int) -> 
             message_placeholder = st.empty()
             full_response = ""
 
-            # Show "Thinking..." while generating
-            with st.expander("Generating...", expanded=True) as response_expander:
+            # Show response in expander
+            with st.expander("Assistant is typing...", expanded=True):
                 for chunk in chat_manager.generate_streamed_response(
                     prompt, temperature, max_tokens
                 ):
                     full_response += chunk
                     message_placeholder.markdown(full_response)
 
-                # Update expander header after response is complete
-                preview = (
-                    (full_response[:47] + "...")
-                    if len(full_response) > 50
-                    else full_response
-                )
-                response_expander.header(preview)
-
         # Add assistant response to chat history
         st.session_state.messages.append(
             {"role": "assistant", "content": full_response}
         )
+
+        # Force a rerun to display the final message properly
+        st.rerun()
