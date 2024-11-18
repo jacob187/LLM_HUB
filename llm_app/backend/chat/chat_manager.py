@@ -20,6 +20,18 @@ class ChatManager:
     def generate_response(
         self, prompt: str, temperature: float, max_tokens: int
     ) -> str:
+        """
+        Generate a response from the language model based on the given prompt and parameters.
+
+        Args:
+            prompt (str): The input text prompt to generate a response for
+            temperature (float): Controls randomness in the response generation.
+            max_tokens (int): The maximum number of tokens to generate in the response
+
+        Returns:
+            str: The generated text response from the language model
+
+        """
         validated_temp = self.__llm.normalize_temperature(temperature)
         validated_tokens = self.__llm.set_max_tokens(max_tokens)
 
@@ -32,6 +44,18 @@ class ChatManager:
     def generate_streamed_response(
         self, prompt: str, temperature: float, max_tokens: int
     ) -> Iterator[str]:
+        """
+        Generate a streamed response from the language model based on the given prompt and parameters.
+
+        Args:
+            prompt (str): The input text prompt to generate a response for
+            temperature (float): Controls randomness in the response generation.
+            max_tokens (int): The maximum number of tokens to generate in the response
+
+        Returns:
+            str: The generated text response from the language model
+
+        """
         validated_temp = self.__llm.normalize_temperature(temperature)
         validated_tokens = self.__llm.set_max_tokens(max_tokens)
 
