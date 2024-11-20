@@ -9,8 +9,6 @@ __pycache__/
 .env
 
 
-# Poetry
-poetry.lock
 
 .DS_Store
 .vscode/
