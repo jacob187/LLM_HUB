@@ -55,4 +55,6 @@ class AnthropicLLM(BaseLLM):
                 f"Max tokens {max_tokens} is greater than the maximum allowed {MAX_TOKENS}"
             )
         else:
+            self.__max_tokens = max_tokens
+            self._llm = self._create_llm()
             return max_tokens
