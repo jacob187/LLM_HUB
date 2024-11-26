@@ -4,6 +4,7 @@ from ..memory.base_memory import BaseMemoryWrapper
 from ..llms.models.base_llm import BaseLLM
 
 
+# TODO fix chat_manager so it just creates response and does not handle settings logic.
 class ChatManager:
     def __init__(
         self,
@@ -17,9 +18,7 @@ class ChatManager:
 
         self.__model = llm.get_language_model()
 
-    def generate_response(
-        self, prompt: str, temperature: float, max_tokens: int
-    ) -> str:
+    def generate_response(self, prompt: str) -> str:
         """
         Generate a response from the language model based on the given prompt and parameters.
 
@@ -32,18 +31,11 @@ class ChatManager:
             str: The generated text response from the language model
 
         """
-        validated_temp = self.__llm.normalize_temperature(temperature)
-        validated_tokens = self.__llm.set_max_tokens(max_tokens)
-
-        self.__model.temperature = validated_temp
-        self.__model.max_tokens = validated_tokens
 
         response = self.__model.invoke([HumanMessage(content=prompt)])
         return response.content
 
-    def generate_streamed_response(
-        self, prompt: str, temperature: float, max_tokens: int
-    ) -> Iterator[str]:
+    def generate_streamed_response(self, prompt: str) -> Iterator[str]:
         """
         Generate a streamed response from the language model based on the given prompt and parameters.
 
@@ -56,11 +48,6 @@ class ChatManager:
             str: The generated text response from the language model
 
         """
-        validated_temp = self.__llm.normalize_temperature(temperature)
-        validated_tokens = self.__llm.set_max_tokens(max_tokens)
-
-        self.__model.temperature = validated_temp
-        self.__model.max_tokens = validated_tokens
 
         for chunk in self.__model.stream([HumanMessage(content=prompt)]):
             if chunk.content:
