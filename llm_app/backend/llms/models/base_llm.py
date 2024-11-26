@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import Iterator
 
 from langchain.base_language import BaseLanguageModel
 
@@ -73,39 +72,12 @@ class BaseLLM(
         """
         return self.__temperature
 
-    def set_temperature(self, temperature: float) -> float:
-        """
-        Sets the temperature for the model, and updates the Langchain base model.
-        """
-        self.__temperature = self.normalize_temperature(temperature)
-        self._create_llm()
-        return self.__temperature
-
     @property
     def get_max_tokens(self) -> int:
         """
         Retrieves the max tokens for the model.
         """
         return self.__max_tokens
-
-    @abstractmethod
-    def _create_llm(self) -> BaseLanguageModel:
-        """Create and return a new LLM object."""
-        raise NotImplementedError
-
-    def get_language_model(self) -> BaseLanguageModel:
-        """
-        Returns the language model object.
-        """
-        return self._llm
-
-    def normalize_temperature(self, temperature: float) -> float:
-        """
-        Ensures the temperature is within the valid range of 0.0 to 1.0.
-
-        A
-        """
-        return max(0.0, min(1.0, temperature))
 
     @abstractmethod
     def set_max_tokens(self, max_tokens: int) -> int:
@@ -120,6 +92,27 @@ class BaseLLM(
         """
         raise NotImplementedError
 
-    # TODO: Setup response method so I have different ways to handle the response, i.e.
-    # streaming, not streaming, json, etc.
-    # TODO: Implement Top P, Stop Sequences, Frequency Penalty, and Presence Penalty.
+    @abstractmethod
+    def _create_llm(self) -> BaseLanguageModel:
+        """Create and return a new LLM object."""
+        raise NotImplementedError
+
+    def set_temperature(self, temperature: float) -> float:
+        """
+        Sets the temperature for the model, and updates the Langchain base model.
+        """
+        self.__temperature = self.normalize_temperature(temperature)
+        self._create_llm()
+        return self.__temperature
+
+    def normalize_temperature(self, temperature: float) -> float:
+        """
+        Ensures the temperature is within the valid range of 0.0 to 1.0.
+        """
+        return max(0.0, min(1.0, temperature))
+
+    def get_language_model(self) -> BaseLanguageModel:
+        """
+        Returns the language model object.
+        """
+        return self._llm
