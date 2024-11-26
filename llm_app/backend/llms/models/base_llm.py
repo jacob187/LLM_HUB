@@ -33,8 +33,8 @@ class BaseLLM(
         api_model: str,
         provider: str,
         user_model: str,
-        max_tokens: int,
         api_key: str,
+        max_tokens: int | None = None,  # Make optional
         temperature: float = 0.7,
     ):
         self.__provider = provider
@@ -42,8 +42,8 @@ class BaseLLM(
         self.__user_model = user_model
         self.__temperature = temperature
         self.__max_tokens = max_tokens
-        self._llm = self._create_llm()
         self.__api_key = api_key
+        self._llm = self._create_llm()
 
     @property
     def get_api_model(self) -> str:
@@ -71,6 +71,14 @@ class BaseLLM(
         """
         Returns the set temperature for the model.
         """
+        return self.__temperature
+
+    def set_temperature(self, temperature: float) -> float:
+        """
+        Sets the temperature for the model, and updates the Langchain base model.
+        """
+        self.__temperature = self.normalize_temperature(temperature)
+        self._create_llm()
         return self.__temperature
 
     @property
