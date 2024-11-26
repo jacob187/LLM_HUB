@@ -22,7 +22,7 @@ class OpenAILLM(BaseLLM):
 
         # Keeps track of the technical model name and max tokens
         self.__api_model = available_models.OPENAIMODELS[user_model]["api"]
-        self.__max_tokens = available_models.OPENAIMODELS[user_model]["max_output"]
+        self.__max_tokens = 3000
 
         # Initialize the API key if it is present.
         self.__api_key = os.getenv("OPENAI_API_KEY")
@@ -46,9 +46,9 @@ class OpenAILLM(BaseLLM):
         """
         return langchain_openai.ChatOpenAI(
             api_key=self.__api_key,
-            model=self.get_api_model,
-            max_tokens=self.get_max_tokens,
-            temperature=self.get_temperature,
+            model=self.__api_model,
+            max_tokens=self._BaseLLM__max_tokens,
+            temperature=self._BaseLLM__temperature,
         )
 
     def set_max_tokens(self, max_tokens: int) -> int:
@@ -61,7 +61,6 @@ class OpenAILLM(BaseLLM):
             raise ValueError(
                 f"Max tokens {max_tokens} is greater than the maximum allowed {MAX_TOKENS}"
             )
-        else:
-            self.__max_tokens = max_tokens
-            self._llm = self._create_llm()
-            return max_tokens
+        self._BaseLLM__max_tokens = max_tokens  # Update parent class variable
+        self._llm = self._create_llm()
+        return self._BaseLLM__max_tokens
