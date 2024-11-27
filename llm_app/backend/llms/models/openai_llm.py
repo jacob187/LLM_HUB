@@ -21,8 +21,13 @@ class OpenAILLM(BaseLLM):
         """
 
         # Keeps track of the technical model name and max tokens
-        self.__api_model = available_models.OPENAIMODELS[user_model]["api"]
-        self.__max_tokens = 3000
+        try:
+            self.__api_model = available_models.OPENAIMODELS[user_model]["api"]
+            self.__max_tokens = available_models.OPENAIMODELS[user_model]["max_output"]
+        except Exception as e:
+            raise ValueError(
+                f"Model {user_model} not found in available OpenAI models."
+            )
 
         # Initialize the API key if it is present.
         self.__api_key = os.getenv("OPENAI_API_KEY")
