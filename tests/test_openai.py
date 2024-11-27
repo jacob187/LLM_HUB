@@ -64,6 +64,8 @@ def main():
             llm.set_max_tokens(max_tokens)
             print(f"Max tokens set to: {llm.get_max_tokens}")
 
+        print(f"Max tokens: {llm.get_max_tokens} \nTemperature: {llm.get_temperature}")
+
         chat_manager = ChatManager(llm)
         for chunk in chat_manager.generate_streamed_response(prompt=prompt):
             print(chunk, end="", flush=True)
@@ -74,5 +76,5 @@ def main():
 
 if __name__ == "__main__":
 
-    # main()
+    main()
     unittest.main()
