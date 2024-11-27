@@ -23,9 +23,7 @@ class TestAnthropicLLM(unittest.TestCase):
             self.llm.set_max_tokens(10000)
 
     def test_generate_response(self):
-        response = self.chat_manager.generate_response(
-            prompt="Hello, how are you?", temperature=0.7, max_tokens=100
-        )
+        response = self.chat_manager.generate_response(prompt="Hello, how are you?")
         self.assertIsInstance(response, str)
         self.assertGreater(len(response), 0)
         self.assertNotIn(os.getenv("ANTHROPIC_API_KEY"), response)
@@ -52,7 +50,6 @@ def main():
     model = models[model_number - 1][0]
     try:
         llm = AnthropicLLM(model)
-        chat_manager = ChatManager(llm)
     except ValueError as e:
         print(f"Error initializing LLM: {e}")
         sys.exit(1)
@@ -62,10 +59,15 @@ def main():
     try:
         temperature = input("Enter the temperature 0 - 1: ")
         max_tokens = input("Enter the max tokens: ")
+
+        llm.set_max_tokens(int(max_tokens))
+        llm.set_temperature(float(temperature))
+
+        print(f"Max tokens: {llm.get_max_tokens} \nTemperature: {llm.get_temperature}")
+
+        chat_manager = ChatManager(llm)
         print(f"\nStreaming response from {model}:\n")
-        for chunk in chat_manager.generate_streamed_response(
-            prompt, float(temperature), int(max_tokens)
-        ):
+        for chunk in chat_manager.generate_streamed_response(prompt=prompt):
             print(chunk, end="", flush=True)
         print("\n")
     except Exception as e:
@@ -73,5 +75,5 @@ def main():
 
 
 if __name__ == "__main__":
-    # unittest.main()
     main()
+    unittest.main()
