@@ -38,7 +38,7 @@ class TestOpenAILLM(unittest.TestCase):
 
         self.assertLess(approximate_tokens, 5)
 
-        self.assertEquals(self.llm.get_max_tokens, 1)
+        self.assertEqual(self.llm.get_max_tokens, 1)
 
 
 def main():
