@@ -43,9 +43,9 @@ class AnthropicLLM(BaseLLM):
     def _create_llm(self) -> langchain_anthropic.ChatAnthropic:
         return langchain_anthropic.ChatAnthropic(
             api_key=self.__api_key,
-            model=self.get_api_model,
-            max_tokens=self.get_max_tokens,
-            temperature=self.get_temperature,
+            model=self.__api_model,
+            max_tokens=self._BaseLLM__max_tokens,
+            temperature=self._BaseLLM__temperature,
         )
 
     def set_max_tokens(self, max_tokens: int) -> int:
@@ -55,6 +55,6 @@ class AnthropicLLM(BaseLLM):
                 f"Max tokens {max_tokens} is greater than the maximum allowed {MAX_TOKENS}"
             )
         else:
-            self.__max_tokens = max_tokens
+            self._BaseLLM__max_tokens = max_tokens  # Update parent class attribute.
             self._llm = self._create_llm()
-            return max_tokens
+            return self._BaseLLM__max_tokens
