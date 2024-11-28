@@ -3,7 +3,7 @@ import streamlit as st
 from llm_app.backend.chat.chat_manager import ChatManager
 
 
-def chat_box(chat_manager: ChatManager, temperature: float, max_tokens: int) -> None:
+def chat_box(chat_manager: ChatManager) -> None:
     # Initialize chat history
     if "messages" not in st.session_state:
         st.session_state.messages = []
@@ -66,9 +66,7 @@ def chat_box(chat_manager: ChatManager, temperature: float, max_tokens: int) -> 
 
             # Show response in expander
             with st.expander("Assistant is typing...", expanded=True):
-                for chunk in chat_manager.generate_streamed_response(
-                    prompt, temperature, max_tokens
-                ):
+                for chunk in chat_manager.generate_streamed_response(prompt=prompt):
                     full_response += chunk
                     message_placeholder.markdown(full_response)
 
