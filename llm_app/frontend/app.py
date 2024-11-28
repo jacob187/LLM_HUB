@@ -48,10 +48,12 @@ def main():
 
     # Display chat box
     if st.session_state.chat_manager:
+        llm = LLMFactory.create_llm(st.session_state.user_model)
+        llm.set_max_tokens(st.session_state.max_tokens)
+        llm.set_temperature(st.session_state.temperature)
+        st.session_state.chat_manager = ChatManager(llm=llm)
         chat_box(
             st.session_state.chat_manager,
-            st.session_state.temperature,
-            st.session_state.max_tokens,
         )
 
 
