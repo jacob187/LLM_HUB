@@ -3,13 +3,14 @@ __pycache__/
 *.py[cod]
 .python-version
 
+
 # Vitual Environment
 .venv/
 
 .env
 
 
-
+.idea/
 .DS_Store
 .vscode/
 
