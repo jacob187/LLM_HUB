@@ -13,6 +13,7 @@ python-dotenv = "^1.0.1"
 langchain-anthropic = "^0.2.1"
 langchain-openai = "^0.2.2"
 watchdog = "^5.0.3"
+pytest = "^8.3.4"
 
 
 [build-system]
