@@ -2,11 +2,11 @@
 __pycache__/
 *.py[cod]
 .python-version
+.pytest_cache
 
 
 # Vitual Environment
 .venv/
-
 .env
 
 
