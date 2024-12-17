@@ -31,27 +31,27 @@
     "Claude 3.5 Sonnet": {
       "api": "claude-3-5-sonnet-latest",
       "max_output": 8192,
-      "context_window": 120000
+      "context_window": 2000000
     },
     "Claude 3.5 Haiku": {
       "api": "claude-3-5-haiku-latest",
       "max_output": 8192,
-      "context_window": 120000
+      "context_window": 2000000
     },
     "Claude 3 Haiku": {
       "api": "claude-3-haiku-20240307",
       "max_output": 4096,
-      "context_window": 120000
+      "context_window": 2000000
     },
     "Claude 3 Opus": {
       "api": "claude-3-opus-20240229",
       "max_output": 4096,
-      "context_window": 120000
+      "context_window": 2000000
     },
     "Claude 3 Sonnet": {
       "api": "claude-3-sonnet-20240229",
       "max_output": 4096,
-      "context_window": 120000
+      "context_window": 2000000
     }
   }
 }
