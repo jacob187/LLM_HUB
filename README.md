@@ -22,7 +22,7 @@ Then install the required packages:
 poetry install
 ```
 
-Add your own API keys to a `.env` file. See `.env.example` for reference.
+Add your own API keys and python path to a `.env` file. See `.env.example` for reference.
 
 To activate the virtual environment, run the following command:
 
