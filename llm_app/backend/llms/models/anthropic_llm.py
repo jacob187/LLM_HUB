@@ -41,6 +41,9 @@ class AnthropicLLM(BaseLLM):
         self._llm = self._create_llm()
 
     def _create_llm(self) -> langchain_anthropic.ChatAnthropic:
+        """
+        Creates the OpenAI LLM model given the API key, model, max tokens, and temperature.
+        """
         return langchain_anthropic.ChatAnthropic(
             api_key=self.__api_key,
             model=self.__api_model,
@@ -49,6 +52,10 @@ class AnthropicLLM(BaseLLM):
         )
 
     def set_max_tokens(self, max_tokens: int) -> int:
+        """
+        Validates and sets the max tokens for the model.
+        Returns the validated max_token value.
+        """
         MAX_TOKENS = available_models.ANTHROPICMODELS[self.get_user_model]["max_output"]
         if max_tokens > MAX_TOKENS:
             raise ValueError(
