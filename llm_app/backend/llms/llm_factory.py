@@ -29,4 +29,10 @@ class LLMFactory:
 
     @staticmethod
     def merge_models() -> dict[str, str]:
+        """
+        Creates a dictionary of all available models from the json files.
+
+        Returns:
+            A dictionary of all available models.
+        """
         return {**ANTHROPICMODELS, **OPENAIMODELS}
