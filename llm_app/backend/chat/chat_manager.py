@@ -4,7 +4,6 @@ from ..memory.base_memory import BaseMemoryWrapper
 from ..llms.models.base_llm import BaseLLM
 
 
-# TODO fix chat_manager so it just creates response and does not handle settings logic.
 class ChatManager:
     def __init__(
         self,
