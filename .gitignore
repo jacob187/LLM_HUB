@@ -14,3 +14,5 @@ __pycache__/
 .DS_Store
 .vscode/
 
+# Ignore notes file
+notes.md
