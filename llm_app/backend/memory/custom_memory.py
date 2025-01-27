@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import List
 from langchain_core.messages import HumanMessage, AIMessage, BaseMessage
 
 
@@ -14,13 +14,27 @@ class CustomMemory:
         """Add an AI message to memory"""
         self.memory["ai_messages"].append(message)
 
-    def get_conversation_history(self) -> str:
-        """Get the conversation history as a String to be given as Langchain BaseMessage"""
+    def get_conversation_history(self) -> List[BaseMessage]:
+        """
+        Get the conversation history as a list of LangChain BaseMessage objects.
+        This format is required for the LangChain chat model's stream/invoke methods.
+        """
+        messages = []
+        for user_msg, ai_msg in zip(
+            self.memory["user_messages"], self.memory["ai_messages"]
+        ):
+            messages.extend(
+                [
+                    HumanMessage(content=user_msg),
+                    AIMessage(content=ai_msg),
+                ]
+            )
 
-        user_messages = " ".join(self.memory["user_messages"])
-        ai_messages = " ".join(self.memory["ai_messages"])
+        # Add final user message if present
+        if len(self.memory["user_messages"]) > len(self.memory["ai_messages"]):
+            messages.append(HumanMessage(content=self.memory["user_messages"][-1]))
 
-        return ai_messages + user_messages
+        return messages
 
     def clear(self) -> None:
         """Clear the memory"""
