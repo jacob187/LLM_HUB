@@ -15,7 +15,7 @@ class CustomMemory:
         self.memory["ai_messages"].append(message)
 
     def get_conversation_history(self) -> str:
-        """Get the conversation history as LangChain messages"""
+        """Get the conversation history as a String to be given as Langchain BaseMessage"""
 
         user_messages = " ".join(self.memory["user_messages"])
         ai_messages = " ".join(self.memory["ai_messages"])
