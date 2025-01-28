@@ -42,13 +42,15 @@ class ChatManager:
             # Add the new user message to memory
             self.__memory.add_user_message(prompt)
 
-            # Get conversation history
-            messages = self.__memory.get_conversation_history()
+            # Get conversation history as List[BaseMessage]
+            messages = (
+                self.__memory.get_conversation_history()
+            )  # Already correct format
 
             ai_message = ""
             # Pass messages directly to stream method
-            for chunk in self.__model.stream(messages):  # Changed from invoke to stream
-                if chunk.content:  # Check if chunk has content
+            for chunk in self.__model.stream(messages):
+                if chunk.content:
                     ai_message += chunk.content
                     yield chunk.content
 
