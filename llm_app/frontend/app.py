@@ -46,6 +46,15 @@ def main():
         or new_tokens != st.session_state.max_tokens
     )
 
+    # Clear messages if model changes
+    if new_model != st.session_state.user_model:
+        st.session_state.messages = []  # Clear UI messages
+        if (
+            st.session_state.chat_manager
+            and st.session_state.chat_manager._ChatManager__memory
+        ):
+            st.session_state.chat_manager._ChatManager__memory.clear()  # Clear memory
+
     if should_update_manager:
         st.session_state.user_model = new_model
         st.session_state.memory_enabled = memory
@@ -69,8 +78,6 @@ def main():
         else:
             # If disabling memory or no messages exist
             st.session_state.chat_manager = ChatManager(llm=llm, memory=memory)
-            if not memory:
-                st.session_state.messages = []
 
     # Display memory status
     if st.session_state.memory_enabled:
