@@ -25,6 +25,8 @@ def main():
         st.session_state.max_tokens = 3000
     if "messages" not in st.session_state:
         st.session_state.messages = []
+    if "memory_enabled" not in st.session_state:
+        st.session_state.memory_enabled = False
 
     # Model selection and settings through sidebar
     merged_models = LLMFactory.merge_models()
@@ -34,27 +36,51 @@ def main():
         else 3000
     )
 
-    new_model, new_temp, new_tokens = settings_sidebar(user_model_max_tokens)
+    new_model, new_temp, new_tokens, memory = settings_sidebar(user_model_max_tokens)
 
-    # Update model if changed
-    if new_model != st.session_state.user_model:
+    # Update chat manager if model or memory setting changes
+    should_update_manager = (
+        new_model != st.session_state.user_model
+        or memory != st.session_state.memory_enabled
+        or new_temp != st.session_state.temperature
+        or new_tokens != st.session_state.max_tokens
+    )
+
+    if should_update_manager:
         st.session_state.user_model = new_model
-        llm = LLMFactory.create_llm(st.session_state.user_model)
-        st.session_state.chat_manager = ChatManager(llm=llm)
-        st.session_state.messages = []
+        st.session_state.memory_enabled = memory
+        st.session_state.temperature = new_temp
+        st.session_state.max_tokens = new_tokens
 
-    st.session_state.temperature = new_temp
-    st.session_state.max_tokens = new_tokens
+        # Create new LLM with updated parameters
+        llm = LLMFactory.create_llm(st.session_state.user_model)
+        llm.set_temperature(new_temp)
+        llm.set_max_tokens(new_tokens)
+
+        # If enabling memory, transfer existing messages
+        if memory and st.session_state.messages:
+            chat_manager = ChatManager(llm=llm, memory=True)
+            for msg in st.session_state.messages:
+                if msg["role"] == "user":
+                    chat_manager._ChatManager__memory.add_user_message(msg["content"])
+                else:
+                    chat_manager._ChatManager__memory.add_ai_message(msg["content"])
+            st.session_state.chat_manager = chat_manager
+        else:
+            # If disabling memory or no messages exist
+            st.session_state.chat_manager = ChatManager(llm=llm, memory=memory)
+            if not memory:
+                st.session_state.messages = []
+
+    # Display memory status
+    if st.session_state.memory_enabled:
+        st.sidebar.success("Memory: Enabled")
+    else:
+        st.sidebar.warning("Memory: Disabled")
 
     # Display chat box
     if st.session_state.chat_manager:
-        llm = LLMFactory.create_llm(st.session_state.user_model)
-        llm.set_max_tokens(st.session_state.max_tokens)
-        llm.set_temperature(st.session_state.temperature)
-        st.session_state.chat_manager = ChatManager(llm=llm)
-        chat_box(
-            st.session_state.chat_manager,
-        )
+        chat_box(st.session_state.chat_manager)
 
 
 if __name__ == "__main__":
