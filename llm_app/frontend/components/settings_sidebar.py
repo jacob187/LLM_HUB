@@ -12,5 +12,6 @@ def settings_sidebar(user_model_max_tokens: int):
         st.title("⚙️ Settings")
         selected_model = select_model()
         temperature, max_tokens = select_settings(user_model_max_tokens)
+        memory = st.checkbox("Memory")
 
-    return selected_model, temperature, max_tokens
+    return selected_model, temperature, max_tokens, memory
