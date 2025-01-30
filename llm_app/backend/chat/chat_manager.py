@@ -19,23 +19,6 @@ class ChatManager:
 
         self.__model = llm.get_language_model()
 
-    def generate_response(self, prompt: str) -> str:
-        """
-        Generate a response from the language model based on the given prompt and parameters.
-
-        Args:
-            prompt (str): The input text prompt to generate a response for
-            temperature (float): Controls randomness in the response generation.
-            max_tokens (int): The maximum number of tokens to generate in the response
-
-        Returns:
-            str: The generated text response from the language model
-
-        """
-
-        response = self.__model.invoke([HumanMessage(content=prompt)])
-        return response.content
-
     def generate_streamed_response(self, prompt: str) -> Iterator[str]:
         """Generate a response from the language model"""
         if self.__memory:
@@ -43,12 +26,10 @@ class ChatManager:
             self.__memory.add_user_message(prompt)
 
             # Get conversation history as List[BaseMessage]
-            messages = (
-                self.__memory.get_conversation_history()
-            )  # Already correct format
+            messages = self.__memory.get_conversation_history()
 
             ai_message = ""
-            # Pass messages directly to stream method
+            # Pass the FULL conversation history to the model
             for chunk in self.__model.stream(messages):
                 if chunk.content:
                     ai_message += chunk.content
@@ -61,3 +42,15 @@ class ChatManager:
             for chunk in self.__model.stream([HumanMessage(content=prompt)]):
                 if chunk.content:
                     yield chunk.content
+
+    def generate_response(self, prompt: str) -> str:
+        """Generate a non-streamed response"""
+        if self.__memory:
+            self.__memory.add_user_message(prompt)
+            messages = self.__memory.get_conversation_history()
+            response = self.__model.invoke(messages)
+            self.__memory.add_ai_message(response.content)
+            return response.content
+        else:
+            response = self.__model.invoke([HumanMessage(content=prompt)])
+            return response.content
