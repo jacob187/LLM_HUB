@@ -4,7 +4,7 @@
 
 My goal for this project is to create a universal interface for interacting with LLMs by leveraging LangChain. Ultimately, I want to create a modular structure where I can build APIs to integrate LLMs into other applications.
 
-The Streamlit application allows you to interact with different LLMs. Currently, the project supports Anthropic and OpenAI. I plan to add support for HuggingFace models in the future.
+The Streamlit application allows you to interact with different LLMs. Currently, the project supports Anthropic and OpenAI models.
 
 ## Installation
 
@@ -23,6 +23,8 @@ poetry install
 ```
 
 Add your own API keys and python path to a `.env` file. See `.env.example` for reference.
+
+Add the path to this python project in the `PYTHONPATH` variable in `.env`
 
 To activate the virtual environment, run the following command:
 
