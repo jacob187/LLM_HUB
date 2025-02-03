@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Any
 
 from langchain.base_language import BaseLanguageModel
 
@@ -73,7 +74,7 @@ class BaseLLM(
         return self.__temperature
 
     @property
-    def get_max_tokens(self) -> int:
+    def get_max_tokens(self) -> int | None:
         """
         Retrieves the max tokens for the model.
         """
@@ -93,7 +94,7 @@ class BaseLLM(
         raise NotImplementedError
 
     @abstractmethod
-    def _create_llm(self) -> BaseLanguageModel:
+    def _create_llm(self) -> BaseLanguageModel[Any]:
         """Create and return a new LLM object."""
         raise NotImplementedError
 
@@ -111,7 +112,7 @@ class BaseLLM(
         """
         return max(0.0, min(1.0, temperature))
 
-    def get_language_model(self) -> BaseLanguageModel:
+    def get_language_model(self) -> BaseLanguageModel[Any]:
         """
         Returns the language model object.
         """
