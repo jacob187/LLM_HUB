@@ -46,35 +46,35 @@ class BaseLLM(
         self._llm = self._create_llm()
 
     @property
-    def get_api_model(self) -> str:
+    def api_model(self) -> str:
         """
         Returns API code for the model.
         """
         return self.__api_model
 
     @property
-    def get_user_model(self) -> str:
+    def user_model(self) -> str:
         """
         Returns the English name for the model.
         """
         return self.__user_model
 
     @property
-    def get_provider(self) -> str:
+    def provider(self) -> str:
         """
         Returns the LLM provider.
         """
         return self.__provider
 
     @property
-    def get_temperature(self) -> float:
+    def temperature(self) -> float:
         """
         Returns the set temperature for the model.
         """
         return self.__temperature
 
     @property
-    def get_max_tokens(self) -> int | None:
+    def max_tokens(self) -> int | None:
         """
         Retrieves the max tokens for the model.
         """
