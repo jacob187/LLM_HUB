@@ -47,8 +47,8 @@ class AnthropicLLM(BaseLLM):
         return langchain_anthropic.ChatAnthropic(
             api_key=self.__api_key,
             model=self.__api_model,
-            max_tokens=self._BaseLLM__max_tokens,
-            temperature=self._BaseLLM__temperature,
+            max_tokens=self.max_tokens,
+            temperature=self.temperature,
         )
 
     def set_max_tokens(self, max_tokens: int) -> int:
@@ -56,7 +56,7 @@ class AnthropicLLM(BaseLLM):
         Validates and sets the max tokens for the model.
         Returns the validated max_token value.
         """
-        MAX_TOKENS = available_models.ANTHROPICMODELS[self.get_user_model]["max_output"]
+        MAX_TOKENS = available_models.ANTHROPICMODELS[self.user_model]["max_output"]
         if max_tokens > MAX_TOKENS:
             raise ValueError(
                 f"Max tokens {max_tokens} is greater than the maximum allowed {MAX_TOKENS}"
