@@ -19,7 +19,7 @@ class TestOpenAILLM(unittest.TestCase):
 
     def test_set_temperature(self):
         self.llm.set_temperature(0.5)
-        self.assertEqual(self.llm.get_temperature, 0.5)
+        self.assertEqual(self.llm.temperature, 0.5)
 
     def test_generate_response(self):
         response = self.chat_manager.generate_response(prompt="Hello, how are you?")
@@ -38,7 +38,7 @@ class TestOpenAILLM(unittest.TestCase):
 
         self.assertLess(approximate_tokens, 5)
 
-        self.assertEqual(self.llm.get_max_tokens, 1)
+        self.assertEqual(self.llm.max_tokens, 1)
 
 
 def main():
@@ -57,14 +57,14 @@ def main():
         if temp_input:
             temperature = float(temp_input)
             llm.set_temperature(temperature)
-            print(f"Temperature set to: {llm.get_temperature}")
+            print(f"Temperature set to: {llm.temperature}")
 
         if max_tokens_input:
             max_tokens = int(max_tokens_input)
             llm.set_max_tokens(max_tokens)
-            print(f"Max tokens set to: {llm.get_max_tokens}")
+            print(f"Max tokens set to: {llm.max_tokens}")
 
-        print(f"Max tokens: {llm.get_max_tokens} \nTemperature: {llm.get_temperature}")
+        print(f"Max tokens: {llm.max_tokens} \nTemperature: {llm.temperature}")
 
         chat_manager = ChatManager(llm)
         for chunk in chat_manager.generate_streamed_response(prompt=prompt):
