@@ -1,10 +1,11 @@
-from typing import List
+from typing import Dict, List
+
 from langchain_core.messages import HumanMessage, AIMessage, BaseMessage
 
 
 class CustomMemory:
     def __init__(self):
-        self.memory = {"user_messages": [], "ai_messages": []}
+        self.memory: Dict[str, List[str]] = {"user_messages": [], "ai_messages": []}
 
     def add_user_message(self, message: str) -> None:
         """Add a user message to memory"""
@@ -19,7 +20,7 @@ class CustomMemory:
         Get the conversation history as a list of LangChain BaseMessage objects.
         This format is required for the LangChain chat model's stream/invoke methods.
         """
-        messages = []
+        messages: List[BaseMessage] = []
         for user_msg, ai_msg in zip(
             self.memory["user_messages"], self.memory["ai_messages"]
         ):
