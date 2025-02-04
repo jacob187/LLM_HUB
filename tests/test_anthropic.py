@@ -29,11 +29,11 @@ class TestAnthropicLLM(unittest.TestCase):
         self.assertNotIn(os.getenv("ANTHROPIC_API_KEY"), response)
 
     def test_getters(self):
-        self.assertEqual(self.llm.get_api_model, "claude-3-haiku-20240307")
-        self.assertEqual(self.llm.get_user_model, "Claude 3 Haiku")
-        self.assertEqual(self.llm.get_provider, "anthropic")
-        self.assertEqual(self.llm.get_temperature, 0.7)
-        self.assertEqual(self.llm.get_max_tokens, 4096)
+        self.assertEqual(self.llm.api_model, "claude-3-haiku-20240307")
+        self.assertEqual(self.llm.user_model, "Claude 3 Haiku")
+        self.assertEqual(self.llm.provider, "anthropic")
+        self.assertEqual(self.llm.temperature, 0.7)
+        self.assertEqual(self.llm.max_tokens, 4096)
 
 
 def main():
@@ -63,7 +63,7 @@ def main():
         llm.set_max_tokens(int(max_tokens))
         llm.set_temperature(float(temperature))
 
-        print(f"Max tokens: {llm.get_max_tokens} \nTemperature: {llm.get_temperature}")
+        print(f"Max tokens: {llm.max_tokens} \nTemperature: {llm.temperature}")
 
         chat_manager = ChatManager(llm)
         print(f"\nStreaming response from {model}:\n")
