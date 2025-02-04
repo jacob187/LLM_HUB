@@ -2,7 +2,6 @@ from typing import Tuple
 import streamlit as st
 
 
-# TODO: implement logic to have slider dynamically change max tokens given the model
 def select_settings(user_model_max_tokens: int) -> Tuple[float, int]:
     """
     Selects the temperature and max tokens for the model.
