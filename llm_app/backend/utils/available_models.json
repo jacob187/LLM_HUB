@@ -1,5 +1,10 @@
 {
   "OPENAIMODELS": {
+    "O1 Mini": {
+      "api": "o1-mini",
+      "max_output": 65536,
+      "context_window": 128000
+    },
     "GPT-4o": {
       "api": "chatgpt-4o-latest",
       "max_output": 16384,
