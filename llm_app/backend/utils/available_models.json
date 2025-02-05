@@ -1,6 +1,16 @@
 {
   "OPENAIMODELS": {
-    "O1 Mini": {
+    "o3 Mini": {
+      "api": "o3-mini-2025-01-31",
+      "max_output": 100000,
+      "context_window": 200000
+    },
+    "o1": {
+      "api": "o1",
+      "max_output": 100000,
+      "context_window": 200000
+    },
+    "o1 Mini": {
       "api": "o1-mini",
       "max_output": 65536,
       "context_window": 128000
