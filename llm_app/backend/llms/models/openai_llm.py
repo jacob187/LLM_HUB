@@ -1,7 +1,7 @@
 from .base_llm import BaseLLM
 from ...utils import available_models
 
-import langchain_openai
+from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 import os
 
@@ -45,21 +45,21 @@ class OpenAILLM(BaseLLM):
         )
         self._llm = self._create_llm()
 
-    def _create_llm(self) -> langchain_openai.ChatOpenAI:
+    def _create_llm(self) -> ChatOpenAI:
         """
         Creates the OpenAI LLM model given the API key, model, max tokens, and temperature.
         """
         # TODO: Handle models that don't support certain custome parameters from a config. approach.
 
         if self.api_model == "o1-mini":
-            return langchain_openai.ChatOpenAI(
+            return ChatOpenAI(
                 api_key=self.__api_key,
                 model="o1-mini",
                 max_tokens=self.max_tokens,
                 temperature=1,
             )
 
-        return langchain_openai.ChatOpenAI(
+        return ChatOpenAI(
             api_key=self.__api_key,
             model=self.__api_model,
             max_tokens=self.max_tokens,
