@@ -1,7 +1,7 @@
 from .base_llm import BaseLLM
 from ...utils import available_models
 
-import langchain_anthropic
+from langchain_anthropic import ChatAnthropic
 from dotenv import load_dotenv
 import os
 
@@ -40,11 +40,11 @@ class AnthropicLLM(BaseLLM):
         )
         self._llm = self._create_llm()
 
-    def _create_llm(self) -> langchain_anthropic.ChatAnthropic:
+    def _create_llm(self) -> ChatAnthropic:
         """
         Creates the OpenAI LLM model given the API key, model, max tokens, and temperature.
         """
-        return langchain_anthropic.ChatAnthropic(
+        return ChatAnthropic(
             api_key=self.__api_key,
             model=self.__api_model,
             max_tokens=self.max_tokens,
