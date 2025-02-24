@@ -43,13 +43,18 @@
   },
 
   "ANTHROPICMODELS": {
-    "Claude 3.5 Haiku": {
-      "api": "claude-3-5-haiku-latest",
+    "Claude 3.5 Sonnet": {
+      "api": "claude-3-5-sonnet-latest",
       "max_output": 8192,
       "context_window": 2000000
     },
-    "Claude 3.5 Sonnet": {
-      "api": "claude-3-5-sonnet-latest",
+    "Claude 3.7 Sonnet": {
+      "api": "claude-3-7-sonnet-latest",
+      "max_output": 8192,
+      "context_window": 2000000
+    },
+    "Claude 3.5 Haiku": {
+      "api": "claude-3-5-haiku-latest",
       "max_output": 8192,
       "context_window": 2000000
     },
