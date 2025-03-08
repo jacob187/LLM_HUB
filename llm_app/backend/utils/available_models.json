@@ -1,7 +1,17 @@
 {
   "OPENAIMODELS": {
+    "GPT-4o": {
+      "api": "chatgpt-4o-latest",
+      "max_output": 16384,
+      "context_window": 128000
+    },
+    "GPT-4o Mini": {
+      "api": "gpt-4o-mini-2024-07-18",
+      "max_output": 16000,
+      "context-window": 128000
+    },
     "o3 Mini": {
-      "api": "o3-mini-2025-01-31",
+      "api": "o3-mini",
       "max_output": 100000,
       "context_window": 200000
     },
@@ -14,31 +24,6 @@
       "api": "o1-mini",
       "max_output": 65536,
       "context_window": 128000
-    },
-    "GPT-4o": {
-      "api": "chatgpt-4o-latest",
-      "max_output": 16384,
-      "context_window": 128000
-    },
-    "GPT-4o Mini": {
-      "api": "gpt-4o-mini-2024-07-18",
-      "max_output": 16000,
-      "context-window": 128000
-    },
-    "GPT-4 Turbo": {
-      "api": "gpt-4-turbo-preview",
-      "max_output": 4096
-    },
-    "GPT-4": {
-      "api": "gpt-4",
-      "max_output": 8192,
-      "context-window": 128000
-    },
-
-    "GPT-3.5 Turbo": {
-      "api": "gpt-3.5-turbo",
-      "max_output": 4096,
-      "context-window": 16385
     }
   },
 
