@@ -35,4 +35,5 @@ class LLMFactory:
         Returns:
             A dictionary of all available models.
         """
-        return {**ANTHROPICMODELS, **OPENAIMODELS}
+
+        return {**OPENAIMODELS, **ANTHROPICMODELS}
