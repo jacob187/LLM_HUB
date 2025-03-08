@@ -49,14 +49,13 @@ class OpenAILLM(BaseLLM):
         """
         Creates the OpenAI LLM model given the API key, model, max tokens, and temperature.
         """
-        # TODO: Handle models that don't support certain custome parameters from a config. approach.
 
-        if self.api_model == "o1-mini":
+        if self.__api_model == "o1-mini" or self.__api_model == "o3-mini":
             return ChatOpenAI(
                 api_key=self.__api_key,
-                model="o1-mini",
+                model=self.__api_model,
                 max_tokens=self.max_tokens,
-                temperature=1,
+                temperature=1,  # o1-mini and o3-mini models do not support temperature
             )
 
         return ChatOpenAI(
