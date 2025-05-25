@@ -1,9 +1,11 @@
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, Optional
+from dataclasses import dataclass, field
 
 from langchain.base_language import BaseLanguageModel
 
 
+@dataclass
 class BaseLLM(
     ABC,
 ):
@@ -25,60 +27,21 @@ class BaseLLM(
         The API key for the LLM.
     temperature: float
         The temperature for the model.
+    _llm: BaseLanguageModel[Any]
+        The language model object.
 
     """
 
-    def __init__(
-        self,
-        api_model: str,
-        provider: str,
-        user_model: str,
-        api_key: str,
-        max_tokens: int | None = None,  # Make optional
-        temperature: float = 0.7,
-    ):
-        self.__provider = provider
-        self.__api_model = api_model
-        self.__user_model = user_model
-        self.__temperature = temperature
-        self.__max_tokens = max_tokens
-        self.__api_key = api_key
+    api_model: str = field(init=False)
+    provider: str = field(init=False)
+    user_model: str
+    api_key: str = field(init=False, repr=False)
+    max_tokens: Optional[int] = None
+    temperature: float = 0.7
+    _llm: BaseLanguageModel[Any] = field(init=False, repr=False)
+
+    def __post_init__(self):
         self._llm = self._create_llm()
-
-    @property
-    def api_model(self) -> str:
-        """
-        Returns API code for the model.
-        """
-        return self.__api_model
-
-    @property
-    def user_model(self) -> str:
-        """
-        Returns the English name for the model.
-        """
-        return self.__user_model
-
-    @property
-    def provider(self) -> str:
-        """
-        Returns the LLM provider.
-        """
-        return self.__provider
-
-    @property
-    def temperature(self) -> float:
-        """
-        Returns the set temperature for the model.
-        """
-        return self.__temperature
-
-    @property
-    def max_tokens(self) -> int | None:
-        """
-        Retrieves the max tokens for the model.
-        """
-        return self.__max_tokens
 
     @abstractmethod
     def set_max_tokens(self, max_tokens: int) -> int:
@@ -102,9 +65,9 @@ class BaseLLM(
         """
         Sets the temperature for the model, and updates the Langchain base model.
         """
-        self.__temperature = self.normalize_temperature(temperature)
-        self._create_llm()
-        return self.__temperature
+        self.temperature = self.normalize_temperature(temperature)
+        self._llm = self._create_llm()
+        return self.temperature
 
     def normalize_temperature(self, temperature: float) -> float:
         """

@@ -4,40 +4,33 @@ from ...utils import available_models
 from langchain_anthropic import ChatAnthropic
 from dotenv import load_dotenv
 import os
+from dataclasses import dataclass, field
 
 load_dotenv()
 
 
+@dataclass
 class AnthropicLLM(BaseLLM):
-    def __init__(self, user_model: str):
-        """
-        Initializes the OpenAI LLM model.
+    api_model: str = field(init=False)
+    max_tokens: int = field(init=False)
+    api_key: str = field(init=False)
+    _llm: ChatAnthropic = field(init=False)
 
-        Args:
-            user_model: The English name for the model.
-
-        Raises:
-            ValueError: If the OpenAI API key is not found.
-        """
-
+    def __post_init__(self):
+        self.provider = "anthropic"
         # Keeps track of the technical model name and max tokens
-        self.__api_model = available_models.ANTHROPICMODELS[user_model]["api"]
-        self.__max_tokens = available_models.ANTHROPICMODELS[user_model]["max_output"]
+        self.api_model = available_models.ANTHROPICMODELS[self.user_model]["api"]
+        self.max_tokens = available_models.ANTHROPICMODELS[self.user_model][
+            "max_output"
+        ]
 
         # Initialize the API key
-        self.__api_key = os.getenv("ANTHROPIC_API_KEY")
-        if not self.__api_key:
+        self.api_key = os.getenv("ANTHROPIC_API_KEY")
+        if not self.api_key:
             raise ValueError(
                 "Anthropic API key not found, please add it to a .env file at the root of this project."
             )
-
-        super().__init__(
-            provider="anthropic",
-            user_model=user_model,
-            api_model=self.__api_model,
-            api_key=self.__api_key,
-            max_tokens=self.__max_tokens,
-        )
+        super().__post_init__()
         self._llm = self._create_llm()
 
     def _create_llm(self) -> ChatAnthropic:
@@ -45,8 +38,8 @@ class AnthropicLLM(BaseLLM):
         Creates the OpenAI LLM model given the API key, model, max tokens, and temperature.
         """
         return ChatAnthropic(
-            api_key=self.__api_key,
-            model=self.__api_model,
+            api_key=self.api_key,
+            model=self.api_model,
             max_tokens=self.max_tokens,
             temperature=self.temperature,
         )
@@ -62,6 +55,6 @@ class AnthropicLLM(BaseLLM):
                 f"Max tokens {max_tokens} is greater than the maximum allowed {MAX_TOKENS}"
             )
         else:
-            self._BaseLLM__max_tokens = max_tokens  # Update parent class attribute.
+            self.max_tokens = max_tokens  # Update parent class attribute.
             self._llm = self._create_llm()
-            return self._BaseLLM__max_tokens
+            return self.max_tokens
