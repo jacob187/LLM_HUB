@@ -1,7 +1,7 @@
-from llm_app.backend.llms.models.anthropic_llm import AnthropicLLM
-from llm_app.backend.llms.models.openai_llm import OpenAILLM
-from llm_app.backend.llms.models.base_llm import BaseLLM
-from llm_app.backend.utils.available_models import OPENAIMODELS, ANTHROPICMODELS
+from .models.anthropic_llm import AnthropicLLM
+from .models.openai_llm import OpenAILLM
+from .models.base_llm import BaseLLM
+from ..utils.available_models import OPENAIMODELS, ANTHROPICMODELS
 
 
 class LLMFactory:
