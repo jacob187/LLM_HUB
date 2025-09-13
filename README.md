@@ -35,7 +35,7 @@ poetry env activate
 If you wish to run the Streamlit application, run the following command:
 
 ```bash
-streamlit run llm_app/frontend/app.py
+poetry run streamlit run llm_app/frontend/app.py
 ```
 
 ## Current Structure
