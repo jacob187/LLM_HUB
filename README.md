@@ -29,7 +29,7 @@ Add the path to this python project in the `PYTHONPATH` variable in `.env`
 To activate the virtual environment, run the following command:
 
 ```bash
-poetry shell
+poetry env activate
 ```
 
 If you wish to run the Streamlit application, run the following command:
