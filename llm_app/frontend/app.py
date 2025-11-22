@@ -36,7 +36,15 @@ def main():
         else 3000
     )
 
-    new_model, new_temp, new_tokens, memory = settings_sidebar(user_model_max_tokens)
+    new_model, new_temp, new_tokens, memory, clear_memory = settings_sidebar(
+        user_model_max_tokens
+    )
+
+    if clear_memory:
+        if st.session_state.chat_manager:
+            st.session_state.chat_manager.clear_memory()
+            st.session_state.messages = []
+            st.success("Memory cleared")
 
     # Update chat manager if model or memory setting changes
     should_update_manager = (
@@ -48,12 +56,9 @@ def main():
 
     # Clear messages if model changes
     if new_model != st.session_state.user_model:
-        st.session_state.messages = []  # Clear UI messages
-        if (
-            st.session_state.chat_manager
-            and st.session_state.chat_manager._ChatManager__memory
-        ):
-            st.session_state.chat_manager._ChatManager__memory.clear()  # Clear memory
+        st.session_state.messages = []
+        if st.session_state.chat_manager and st.session_state.chat_manager.has_memory:
+            st.session_state.chat_manager.clear_memory()
 
     if should_update_manager:
         st.session_state.user_model = new_model
@@ -71,9 +76,9 @@ def main():
             chat_manager = ChatManager(llm=llm, memory=True)
             for msg in st.session_state.messages:
                 if msg["role"] == "user":
-                    chat_manager._ChatManager__memory.add_user_message(msg["content"])
+                    chat_manager.memory.add_user_message(msg["content"])
                 else:
-                    chat_manager._ChatManager__memory.add_ai_message(msg["content"])
+                    chat_manager.memory.add_ai_message(msg["content"])
             st.session_state.chat_manager = chat_manager
         else:
             # If disabling memory or no messages exist
