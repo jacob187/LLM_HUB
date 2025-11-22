@@ -13,5 +13,6 @@ def settings_sidebar(user_model_max_tokens: int):
         selected_model = select_model()
         temperature, max_tokens = select_settings(user_model_max_tokens)
         memory = st.checkbox("Memory")
+        clear_memory = st.button("Clear Memory")
 
-    return selected_model, temperature, max_tokens, memory
+    return selected_model, temperature, max_tokens, memory, clear_memory
